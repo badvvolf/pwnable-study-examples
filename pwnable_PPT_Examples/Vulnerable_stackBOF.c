@@ -5,7 +5,9 @@
 
 int main()
 {
-	char input[100];
+	char input[200];
 
 	scanf("%s", input);
+
 }
+
